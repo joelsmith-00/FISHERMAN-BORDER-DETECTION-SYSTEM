@@ -284,6 +284,33 @@
             <p class="text-xs uppercase tracking-[0.16em] text-amber">Swipe Architecture Layers →</p>
           </div>
           <div id="techSlider" class="tech-slider-track">
+        <section id="cloud-command" class="arch-slide space-y-6 reveal">
+          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">Cloud Intelligence (AWS)</h3>
+          <p class="text-center text-sm uppercase tracking-[0.16em] text-amber">Cloud Command Center</p>
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <article class="architecture-card reveal">
+              <span class="text-3xl">🛠️</span>
+              <h4>Amazon Bedrock</h4>
+              <p>Generates livelihood advisories using satellite data and suggests high-yield fishing zones.</p>
+            </article>
+            <article class="architecture-card reveal">
+              <span class="text-3xl">⚙️</span>
+              <h4>AWS Lambda + API Gateway</h4>
+              <p>Processes emergency alerts and triggers notification systems.</p>
+            </article>
+            <article class="architecture-card reveal">
+              <span class="text-3xl">🗃️</span>
+              <h4>Amazon DynamoDB</h4>
+              <p>Stores boat history, trip data, and emergency records.</p>
+            </article>
+            <article class="architecture-card reveal">
+              <span class="text-3xl">📬</span>
+              <h4>AWS SQS</h4>
+              <p>Ensures emergency messages are reliably delivered even during weak connectivity.</p>
+            </article>
+          </div>
+        </section>
+
         <section id="system-overview" class="arch-slide space-y-6 reveal">
           <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">System Overview</h3>
           <article class="glass-card p-6 md:p-8 reveal">
@@ -378,39 +405,12 @@
           </div>
         </section>
 
-        <section id="cloud-command" class="arch-slide space-y-6 reveal">
-          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">Cloud Intelligence (AWS)</h3>
-          <p class="text-center text-sm uppercase tracking-[0.16em] text-amber">Cloud Command Center</p>
-          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <article class="architecture-card reveal">
-              <span class="text-3xl">🛠️</span>
-              <h4>Amazon Bedrock</h4>
-              <p>Generates livelihood advisories using satellite data and suggests high-yield fishing zones.</p>
-            </article>
-            <article class="architecture-card reveal">
-              <span class="text-3xl">⚙️</span>
-              <h4>AWS Lambda + API Gateway</h4>
-              <p>Processes emergency alerts and triggers notification systems.</p>
-            </article>
-            <article class="architecture-card reveal">
-              <span class="text-3xl">🗃️</span>
-              <h4>Amazon DynamoDB</h4>
-              <p>Stores boat history, trip data, and emergency records.</p>
-            </article>
-            <article class="architecture-card reveal">
-              <span class="text-3xl">📬</span>
-              <h4>AWS SQS</h4>
-              <p>Ensures emergency messages are reliably delivered even during weak connectivity.</p>
-            </article>
-          </div>
-        </section>
-
           </div>
           <div id="techSliderDots" class="tech-slider-dots" aria-label="Architecture slide indicators">
-            <button class="tech-dot is-active" data-slide-target="system-overview" aria-label="Go to System Overview"></button>
+            <button class="tech-dot is-active" data-slide-target="cloud-command" aria-label="Go to Cloud Command Center"></button>
+            <button class="tech-dot" data-slide-target="system-overview" aria-label="Go to System Overview"></button>
             <button class="tech-dot" data-slide-target="hardware-layer" aria-label="Go to Hardware Layer"></button>
             <button class="tech-dot" data-slide-target="edge-intelligence" aria-label="Go to Edge AI Intelligence"></button>
-            <button class="tech-dot" data-slide-target="cloud-command" aria-label="Go to Cloud Command Center"></button>
           </div>
         </section>
 
@@ -625,7 +625,7 @@
 
       pipelineTrack?.addEventListener('mouseleave', clearPipelineFocus);
 
-      const technicalSlideIds = ['system-overview', 'hardware-layer', 'edge-intelligence', 'cloud-command'];
+      const technicalSlideIds = ['cloud-command', 'system-overview', 'hardware-layer', 'edge-intelligence'];
       const slider = document.getElementById('techSlider');
       const sliderDots = Array.from(document.querySelectorAll('.tech-dot'));
 
