@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Technical Components | Marine Guardian AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              base:    '#ffffff',
+              surface: '#faf6f0',
+              warm:    '#f5efe6',
+              gold:    '#d9ad5d',
+              cream:   '#f5e6c8',
+              amber:   '#c8973a',
+              muted:   '#c8b89a',
+              safety:  '#ef4444'
+            },
+            fontFamily: {
+              display: ['Playfair Display', 'serif'],
+              body:    ['Inter', 'sans-serif']
+            },
+            boxShadow: {
+              glow: '0 0 0 1px rgba(217, 173, 93, 0.2), 0 12px 35px rgba(217, 173, 93, 0.12)'
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-base text-neutral-800 antialiased font-body">
+    <div class="min-h-screen bg-gradient-to-b from-base via-surface to-base">
+
+      <!-- ═══ HEADER ═══ -->
+      <header class="theme-navbar sticky top-0 z-50" id="commandNavbar">
+        <div class="navbar-shell mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
+          <a href="#hero" class="nav-brand flex items-center gap-3" aria-label="Marine Guardian AI home">
+            <div class="nav-brand-icon" aria-hidden="true">⚓</div>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.22em] text-amber">Command Center</p>
+              <h1 class="font-display text-lg font-semibold text-neutral-800">Marine Guardian AI</h1>
+            </div>
+          </a>
+
+          <nav class="nav-links hidden items-center gap-3 text-xs text-neutral-800 lg:flex" aria-label="Primary">
+            <a href="#hero" class="nav-pill js-nav-link is-active">Identity</a>
+            <a href="#problem" class="nav-pill js-nav-link">Problem</a>
+            <a href="#features" class="nav-pill js-nav-link">Features</a>
+            <a href="#technical-components" class="nav-pill js-nav-link">Technical Components</a>
+            <a href="#data-flow" class="nav-pill js-nav-link">Data Flow</a>
+          </nav>
+
+          <div class="hidden items-center lg:flex">
+            <a href="https://fisherman-border-detection-system-by-zenq.onrender.com/" target="_blank" rel="noopener noreferrer" class="nav-cta">View System Demo</a>
+          </div>
+
+          <button
+            id="navToggle"
+            class="nav-toggle lg:hidden"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mobileNavDrawer"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
+
+        <aside id="mobileNavDrawer" class="mobile-nav-drawer" aria-label="Mobile navigation">
+          <div class="mobile-nav-head">
+            <p class="text-[11px] uppercase tracking-[0.2em] text-amber">Command Center</p>
+            <h2 class="font-display text-xl font-semibold text-neutral-800">Navigation</h2>
+          </div>
+          <nav class="mobile-nav-links" aria-label="Mobile primary">
+            <a href="#hero" class="mobile-nav-pill js-nav-link is-active">Identity</a>
+            <a href="#problem" class="mobile-nav-pill js-nav-link">Problem</a>
+            <a href="#features" class="mobile-nav-pill js-nav-link">Features</a>
+            <a href="#technical-components" class="mobile-nav-pill js-nav-link">Technical Components</a>
+            <a href="#data-flow" class="mobile-nav-pill js-nav-link">Data Flow</a>
+          </nav>
+          <a href="https://fisherman-border-detection-system-by-zenq.onrender.com/" target="_blank" rel="noopener noreferrer" class="nav-cta mobile-nav-cta">View System Demo</a>
+        </aside>
+      </header>
+
+      <main class="mx-auto w-full max-w-7xl space-y-20 px-6 py-12">
+
+        <section id="hero" class="hero-immersive glass-card relative overflow-hidden p-7 shadow-glow md:p-12">
+          <div class="hero-bg-wave" data-parallax="0.06"></div>
+          <div class="hero-bg-grid" data-parallax="0.03"></div>
+          <div class="hero-bg-network" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="hero-split relative z-10">
+            <div class="hero-copy hero-entrance">
+              <p class="hero-eyebrow">Mission-Critical AI for Coastal Safety</p>
+              <h2 class="hero-title">Marine Guardian AI</h2>
+              <h3 class="hero-subtitle">Predictive Maritime Safety for Small-Scale Fishermen</h3>
+              <p class="hero-support">
+                An edge-AI powered safety system that predicts border drift, detects man-overboard incidents, and keeps fishermen connected even in deep-sea environments without internet.
+              </p>
+
+              <div class="hero-tags">
+                <span class="hero-tag">AI Border Prediction</span>
+                <span class="hero-tag">LoRa Emergency Mesh Network</span>
+                <span class="hero-tag">Offline Edge Intelligence</span>
+              </div>
+
+              <div class="hero-actions">
+                <a href="#technical-components" class="hero-cta hero-cta-primary">Explore the Technology</a>
+                <a href="#system-overview" class="hero-cta hero-cta-secondary">View System Architecture</a>
+              </div>
+            </div>
+
+            <figure class="hero-visual-stack" data-parallax="0.1">
+              <img class="hero-image" src="assets/hero-boat.jpeg" alt="Fishing boat navigating coastal waters" />
+              <div class="hero-radar-overlay" aria-hidden="true">
+                <span class="radar-ring ring-1"></span>
+                <span class="radar-ring ring-2"></span>
+                <span class="radar-ring ring-3"></span>
+                <span class="radar-sweep"></span>
+              </div>
+              <div class="hero-float-card card-gps">📍 GPS Tracking</div>
+              <div class="hero-float-card card-border">⚠️ Border Warning</div>
+              <div class="hero-float-card card-sos">📶 SOS Mesh Network</div>
+            </figure>
+          </div>
+
+          <div class="hero-metrics">
+            <article class="metric-item"><strong>10–30 min</strong><span>Early Border Prediction</span></article>
+            <article class="metric-item"><strong>15 km</strong><span>LoRa Communication Range</span></article>
+            <article class="metric-item"><strong>0 Internet</strong><span>Fully Offline Operation</span></article>
+            <article class="metric-item"><strong>Real-Time</strong><span>Edge AI Safety Alerts</span></article>
+          </div>
+
+        </section>
+
+        <section id="problem" class="space-y-6">
+          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">The Problem We Are Solving</h3>
+          <div class="story-strip">
+            <article class="story-card">
+              <img src="assets/border-drift-risk.jpeg" alt="Fishing boats near rough border waters" />
+              <p>Border Drift Risk</p>
+            </article>
+            <article class="story-card">
+              <img src="assets/offshore-connectivity-gap.jpeg" alt="Boat far from shore signaling poor connectivity" />
+              <p>Offshore Connectivity Gap</p>
+            </article>
+            <article class="story-card">
+              <img src="assets/hard-to-detect-emergencies.jpeg" alt="Open sea conditions during emergency weather" />
+              <p>Hard-to-Detect Emergencies</p>
+            </article>
+          </div>
+          <div class="grid gap-4 md:grid-cols-3">
+            <article class="improvement-card">
+              <h4>Unintentional Border Crossing</h4>
+              <p>Strong currents and lack of awareness lead to accidental maritime boundary violations, resulting in arrests and boat confiscations.</p>
+            </article>
+            <article class="improvement-card">
+              <h4>The Connectivity Gap</h4>
+              <p>Mobile signals disappear a few kilometers from the coast, making standard apps useless in the deep sea.</p>
+            </article>
+            <article class="improvement-card">
+              <h4>Invisible Emergencies</h4>
+              <p>Accidents like man-overboard incidents or engine failures often go unnoticed due to high engine noise and lack of communication tools.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="features" class="space-y-8 reveal">
+          <div class="feature-header reveal">
+            <h3 class="font-display text-3xl font-semibold text-neutral-800 md:text-4xl">Key Features</h3>
+            <p class="mt-2 text-sm uppercase tracking-[0.18em] text-amber">Smart Capabilities Powering Marine Guardian AI</p>
+            <p class="mx-auto mt-4 max-w-4xl text-neutral-600">
+              Marine Guardian AI combines edge intelligence, predictive safety models, and resilient communication networks to protect fishermen even in deep-sea environments with zero internet connectivity.
+            </p>
+          </div>
+
+          <div class="feature-showcase-grid">
+            <article class="feature-block reveal stagger-item">
+              
+              <h4>AI-Powered Border Prediction 🧭</h4>
+              <p>Uses Kalman filtering and regression models to forecast potential border drift 10–30 minutes in advance.</p>
+              <ul>
+                <li>Predicts vessel trajectory</li>
+                <li>Early warning voice alerts</li>
+                <li>Prevents accidental border crossings</li>
+              </ul>
+            </article>
+
+            <article class="feature-block reveal stagger-item">
+              
+              <h4>Offline-First Edge AI 🧩</h4>
+              <p>Core intelligence runs locally on the boat-mounted edge device without needing internet connectivity.</p>
+              <ul>
+                <li>Real-time decision making</li>
+                <li>Works in deep-sea environments</li>
+                <li>Low-latency predictions</li>
+              </ul>
+            </article>
+
+            <article class="feature-block reveal stagger-item">
+              
+              <h4>Dual-Layer Emergency SOS 🚨</h4>
+              <ul>
+                <li>Wearable SOS Band detects man-overboard incidents</li>
+                <li>LoRa Mesh Network relays SOS signals between boats</li>
+              </ul>
+              <div class="sos-mini-diagram">
+                <span>👤</span>
+                <em></em>
+                <span>📶</span>
+                <em></em>
+                <span>🚤</span>
+              </div>
+            </article>
+
+            <article class="feature-block reveal stagger-item">
+              
+              <h4>Weather & Livelihood Advisory 🛰️</h4>
+              <ul>
+                <li>On-Edge Sea Risk Classifier</li>
+                <li>Satellite-based fishing zone prediction</li>
+                <li>Fuel cost optimization</li>
+              </ul>
+            </article>
+
+            <article class="feature-block reveal stagger-item feature-flow-panel">
+              
+              <h4>Safety Communication Loop 🔁</h4>
+              <div class="feature-loop">
+                <ul><li>    Emergency alerts containing GPS coordinates and distress signals are instantly transmitted from the fisherman device.</li>
+                <li>     The LoRa mesh network relays the alert to nearby boats and the coast guard cloud, enabling rapid rescue coordination even without internet.</li></ul><div class="loop-chip"><span>🚤</span><p>Fisherman Device</p></div>
+                <div class="loop-line"></div>
+                <div class="loop-chip"><span>📶</span><p>Nearby Boats</p></div>
+                <div class="loop-line"></div>
+                <div class="loop-chip"><span>☁️</span><p>Coast Guard Cloud</p></div>
+              </div>
+            </article>
+
+            <article class="feature-block reveal stagger-item feature-status-panel">
+            
+              <h4>Status Indicators 📊</h4>
+              <div class="status-inline-row">
+                <div class="status-level-card safe-level">
+                  <strong>🟢 Safe</strong>
+                  <p>Normal operations and stable border buffer.</p>
+                </div>
+                <div class="status-level-card caution-level">
+                  <strong>🟡 Caution</strong>
+                  <p>Border or weather risk rising.</p>
+                </div>
+                <div class="status-level-card danger-level">
+                  <strong>🔴 Danger</strong>
+                  <p>Immediate action required.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+
+        </section>
+
+        <section id="technical-components" class="space-y-6 reveal">
+          <h2 class="text-center font-display text-4xl font-bold text-neutral-800 md:text-5xl">Technical Components</h2>
+          <p class="mx-auto max-w-3xl text-center text-neutral-600">A complete architecture view of Marine Guardian AI — from edge sensing and onboard intelligence to cloud coordination and emergency notifications.</p>
+        </section>
+
+        <section class="tech-slider-shell reveal">
+          <div class="mb-3 flex items-center justify-end">
+            <p class="text-xs uppercase tracking-[0.16em] text-amber">Swipe Architecture Layers →</p>
+          </div>
+          <div id="techSlider" class="tech-slider-track">
+        <section id="system-overview" class="arch-slide space-y-6 reveal">
+          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">System Overview</h3>
+          <article class="glass-card p-6 md:p-8 reveal">
+            <p class="text-sm uppercase tracking-[0.18em] text-amber">Marine Guardian AI – Technical Architecture</p>
+            <h4 class="mt-2 font-display text-3xl font-semibold text-neutral-800">Edge-AI Marine Safety Stack</h4>
+            <p class="mt-3 max-w-4xl text-neutral-600">An edge-AI powered marine safety system designed to protect fishermen, predict risks, and enable communication even in zero-internet deep-sea environments.</p>
+            <div class="architecture-diagram mt-6">
+              <div class="tech-node">
+                <span class="tech-icon">📍</span>
+                <p>Sensors</p>
+              </div>
+              <span class="tech-connector">→</span>
+              <div class="tech-node">
+                <span class="tech-icon">🧠</span>
+                <p>Edge AI Boat Device</p>
+              </div>
+              <span class="tech-connector">→</span>
+              <div class="tech-node">
+                <span class="tech-icon">📶</span>
+                <p>LoRa Mesh Network</p>
+              </div>
+              <span class="tech-connector">→</span>
+              <div class="tech-node">
+                <span class="tech-icon">🗼</span>
+                <p>Shore Hub</p>
+              </div>
+              <span class="tech-connector">→</span>
+              <div class="tech-node">
+                <span class="tech-icon">☁️</span>
+                <p>AWS Cloud</p>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section id="hardware-layer" class="arch-slide space-y-6 reveal">
+          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">Hardware Layer</h3>
+          <p class="text-center text-sm uppercase tracking-[0.16em] text-amber">Hardware: The Eyes and Ears at Sea</p>
+          <div class="grid gap-5 lg:grid-cols-2">
+            <article class="glass-card tech-card reveal p-6">
+              <h4 class="font-display text-xl font-semibold text-neutral-800">Boat Mounted Edge-AI Device</h4>
+              <ul class="mt-4 space-y-3 text-neutral-600">
+                <li><span class="feature-icon">🛰️</span><span><strong class="text-neutral-800">GPS & IMU Sensors:</strong> Continuously track boat location, speed, and direction.</span></li>
+                <li><span class="feature-icon">📡</span><span><strong class="text-neutral-800">LoRa Communication Module:</strong> Creates a long-range boat-to-boat mesh network that works even when cellular signal is unavailable.</span></li>
+                <li><span class="feature-icon">🔊</span><span><strong class="text-neutral-800">Voice Alert Interface:</strong> High-power speakers provide real-time Tamil voice warnings so fishermen do not need to look at a screen.</span></li>
+                <li><span class="feature-icon">🌊</span><span><strong class="text-neutral-800">Environmental Sensors:</strong> Monitor atmospheric pressure and sea conditions.</span></li>
+              </ul>
+            </article>
+            <article class="glass-card tech-card reveal p-6">
+              <h4 class="font-display text-xl font-semibold text-neutral-800">Wearable Safety Band</h4>
+              <ul class="mt-4 space-y-3 text-neutral-600">
+                <li><span class="feature-icon">🔗</span><span><strong class="text-neutral-800">BLE Connectivity:</strong> Connected to the boat device via Bluetooth Low Energy.</span></li>
+                <li><span class="feature-icon">📈</span><span><strong class="text-neutral-800">Motion Sensors:</strong> Accelerometer and gyroscope detect sudden falls.</span></li>
+                <li><span class="feature-icon">🆘</span><span><strong class="text-neutral-800">Man-Overboard Detection:</strong> Detects fall patterns using sensor fusion.</span></li>
+                <li><span class="feature-icon">🚨</span><span><strong class="text-neutral-800">Emergency SOS Button:</strong> Manual panic trigger that alerts the boat system instantly.</span></li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="edge-intelligence" class="arch-slide space-y-6 reveal">
+          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">Edge AI Intelligence</h3>
+          <p class="text-center text-sm uppercase tracking-[0.16em] text-amber">Predictive Intelligence at the Edge</p>
+          <div class="grid gap-4 md:grid-cols-3">
+            <article class="flow-step tech-card reveal">
+              <h4>Border Drift Prediction</h4>
+              <ul class="mt-3 list-disc space-y-1.5 pl-5 text-neutral-600">
+                <li>GPS trajectory analysis</li>
+                <li>Kalman Filtering</li>
+                <li>Polynomial regression</li>
+              </ul>
+              <p class="mt-3">Predicts vessel path and warns fishermen <strong class="text-neutral-800">10–30 minutes before possible border crossing.</strong></p>
+            </article>
+            <article class="flow-step tech-card reveal">
+              <h4>On-Device Sea Risk Classifier</h4>
+              <ul class="mt-3 list-disc space-y-1.5 pl-5 text-neutral-600">
+                <li>Barometric pressure</li>
+                <li>Boat motion data</li>
+                <li>Environmental sensor inputs</li>
+              </ul>
+              <p class="mt-3">Classifies conditions as <strong class="text-green-700">Safe</strong>, <strong class="text-amber-700">Caution</strong>, <strong class="text-red-700">Dangerous</strong>.</p>
+              <p class="mt-2 text-sm text-neutral-500">All processing runs directly on the boat device without internet.</p>
+            </article>
+            <article class="flow-step tech-card reveal">
+              <h4>Man-Overboard Detection</h4>
+              <p class="mt-2">AI filters normal boat motion and identifies fall patterns.</p>
+              <ul class="mt-3 list-disc space-y-1.5 pl-5 text-neutral-600">
+                <li>Local alarm activates</li>
+                <li>Nearby vessels are notified through LoRa network</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="cloud-command" class="arch-slide space-y-6 reveal">
+          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">Cloud Intelligence (AWS)</h3>
+          <p class="text-center text-sm uppercase tracking-[0.16em] text-amber">Cloud Command Center</p>
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <article class="architecture-card reveal">
+              <span class="text-3xl">🛠️</span>
+              <h4>Amazon Bedrock</h4>
+              <p>Generates livelihood advisories using satellite data and suggests high-yield fishing zones.</p>
+            </article>
+            <article class="architecture-card reveal">
+              <span class="text-3xl">⚙️</span>
+              <h4>AWS Lambda + API Gateway</h4>
+              <p>Processes emergency alerts and triggers notification systems.</p>
+            </article>
+            <article class="architecture-card reveal">
+              <span class="text-3xl">🗃️</span>
+              <h4>Amazon DynamoDB</h4>
+              <p>Stores boat history, trip data, and emergency records.</p>
+            </article>
+            <article class="architecture-card reveal">
+              <span class="text-3xl">📬</span>
+              <h4>AWS SQS</h4>
+              <p>Ensures emergency messages are reliably delivered even during weak connectivity.</p>
+            </article>
+          </div>
+        </section>
+
+          </div>
+          <div id="techSliderDots" class="tech-slider-dots" aria-label="Architecture slide indicators">
+            <button class="tech-dot is-active" data-slide-target="system-overview" aria-label="Go to System Overview"></button>
+            <button class="tech-dot" data-slide-target="hardware-layer" aria-label="Go to Hardware Layer"></button>
+            <button class="tech-dot" data-slide-target="edge-intelligence" aria-label="Go to Edge AI Intelligence"></button>
+            <button class="tech-dot" data-slide-target="cloud-command" aria-label="Go to Cloud Command Center"></button>
+          </div>
+        </section>
+
+        <section id="data-flow" class="space-y-6 pb-16 reveal">
+          <p class="text-center text-xs uppercase tracking-[0.2em] text-amber">System Architecture Pipeline</p>
+          <h3 class="section-heading font-display text-2xl font-semibold text-neutral-800">System Data Flow</h3>
+          <p class="mx-auto max-w-3xl text-center text-neutral-600">How Marine Guardian AI processes information from sensors to emergency response.</p>
+          <article class="glass-card p-6 reveal pipeline-shell">
+            <div class="pipeline-wrap" id="systemPipeline">
+              <div class="pipeline-track" aria-label="Marine Guardian AI data pipeline">
+                <article class="pipeline-step is-live" data-step="1">
+                  <span class="pipeline-step-number">Step 1</span>
+                  <span class="pipeline-step-icon" aria-hidden="true">📍</span>
+                  <h4>Sensor Data Collection</h4>
+                  <p>Boat sensors collect real-time GPS, IMU motion data, and atmospheric pressure.</p>
+                </article>
+                <span class="pipeline-arrow" data-from="1" data-to="2" aria-hidden="true"></span>
+
+                <article class="pipeline-step" data-step="2">
+                  <span class="pipeline-step-number">Step 2</span>
+                  <span class="pipeline-step-icon" aria-hidden="true">🧠</span>
+                  <h4>Edge AI Processing</h4>
+                  <p>The onboard device processes sensor data locally without needing internet connectivity.</p>
+                </article>
+                <span class="pipeline-arrow" data-from="2" data-to="3" aria-hidden="true"></span>
+
+                <article class="pipeline-step" data-step="3">
+                  <span class="pipeline-step-number">Step 3</span>
+                  <span class="pipeline-step-icon" aria-hidden="true">📈</span>
+                  <h4>Risk Prediction Engine</h4>
+                  <p>AI models detect border drift risk, dangerous sea conditions, and fall incidents.</p>
+                </article>
+                <span class="pipeline-arrow" data-from="3" data-to="4" aria-hidden="true"></span>
+
+                <article class="pipeline-step is-sos" data-step="4">
+                  <span class="pipeline-step-number">Step 4</span>
+                  <span class="pipeline-step-icon" aria-hidden="true">🔊</span>
+                  <h4>Voice Alert System</h4>
+                  <p>Fishermen receive real-time Tamil voice warnings without needing to check screens.</p>
+                </article>
+                <span class="pipeline-arrow" data-from="4" data-to="5" aria-hidden="true"></span>
+
+                <article class="pipeline-step" data-step="5">
+                  <span class="pipeline-step-number">Step 5</span>
+                  <span class="pipeline-step-icon" aria-hidden="true">📶</span>
+                  <h4>LoRa Mesh Communication</h4>
+                  <p>Emergency signals are relayed between nearby boats even when there is no cellular signal.</p>
+                </article>
+                <span class="pipeline-arrow" data-from="5" data-to="6" aria-hidden="true"></span>
+
+                <article class="pipeline-step" data-step="6">
+                  <span class="pipeline-step-number">Step 6</span>
+                  <span class="pipeline-step-icon" aria-hidden="true">🏖️</span>
+                  <h4>Shore Hub Gateway</h4>
+                  <p>The shore station collects offshore data and prepares it for cloud synchronization.</p>
+                </article>
+                <span class="pipeline-arrow" data-from="6" data-to="7" aria-hidden="true"></span>
+
+                <article class="pipeline-step" data-step="7">
+                  <span class="pipeline-step-number">Step 7</span>
+                  <span class="pipeline-step-icon" aria-hidden="true">☁️</span>
+                  <h4>AWS Cloud Processing</h4>
+                  <p>Authorities receive alerts while historical trip data is stored for analysis.</p>
+                </article>
+              </div>
+            </div>
+
+          </article>
+        </section>
+
+      </main>
+    </div>
+
+    <script>
+      const revealElements = document.querySelectorAll('.reveal');
+
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+              }
+            });
+          },
+          { threshold: 0.14, rootMargin: '0px 0px -40px 0px' }
+        );
+
+        revealElements.forEach((element) => revealObserver.observe(element));
+      } else {
+        revealElements.forEach((element) => element.classList.add('is-visible'));
+      }
+
+      const commandNavbar = document.getElementById('commandNavbar');
+      const navToggle = document.getElementById('navToggle');
+      const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+      const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+      const navLinks = Array.from(document.querySelectorAll('.js-nav-link'));
+
+      const setActiveNavLink = (hash) => {
+        navLinks.forEach((link) => {
+          const isActive = link.getAttribute('href') === hash;
+          link.classList.toggle('is-active', isActive);
+        });
+      };
+
+      const openMobileNav = () => {
+        document.body.classList.add('nav-drawer-open');
+        navToggle?.classList.add('is-open');
+        navToggle?.setAttribute('aria-expanded', 'true');
+      };
+
+      const closeMobileNav = () => {
+        document.body.classList.remove('nav-drawer-open');
+        navToggle?.classList.remove('is-open');
+        navToggle?.setAttribute('aria-expanded', 'false');
+      };
+
+      navToggle?.addEventListener('click', () => {
+        if (document.body.classList.contains('nav-drawer-open')) {
+          closeMobileNav();
+          return;
+        }
+        openMobileNav();
+      });
+
+      mobileNavOverlay?.addEventListener('click', closeMobileNav);
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeMobileNav();
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          setActiveNavLink(link.getAttribute('href'));
+          closeMobileNav();
+        });
+      });
+
+      const trackedSections = navLinks
+        .map((link) => link.getAttribute('href'))
+        .filter((href) => href && href.startsWith('#'))
+        .map((href) => document.getElementById(href.slice(1)))
+        .filter((section, index, array) => section && array.indexOf(section) === index);
+
+      if ('IntersectionObserver' in window && trackedSections.length > 0) {
+        const navObserver = new IntersectionObserver(
+          (entries) => {
+            entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+              .slice(0, 1)
+              .forEach((entry) => setActiveNavLink(`#${entry.target.id}`));
+          },
+          { rootMargin: '-34% 0px -50% 0px', threshold: [0.25, 0.45, 0.7] }
+        );
+
+        trackedSections.forEach((section) => navObserver.observe(section));
+      }
+
+      const syncNavbarScrollState = () => {
+        if (!commandNavbar) {
+          return;
+        }
+
+        commandNavbar.classList.toggle('is-scrolled', window.scrollY > 20);
+      };
+
+      window.addEventListener('scroll', syncNavbarScrollState, { passive: true });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) {
+          closeMobileNav();
+        }
+      });
+      syncNavbarScrollState();
+
+      const pipelineTrack = document.querySelector('.pipeline-track');
+      const pipelineSteps = Array.from(document.querySelectorAll('.pipeline-step'));
+      const pipelineArrows = Array.from(document.querySelectorAll('.pipeline-arrow'));
+
+      const clearPipelineFocus = () => {
+        if (!pipelineTrack) {
+          return;
+        }
+
+        pipelineTrack.classList.remove('is-hovering');
+        pipelineSteps.forEach((step) => step.classList.remove('is-active'));
+        pipelineArrows.forEach((arrow) => arrow.classList.remove('is-linked'));
+      };
+
+      pipelineSteps.forEach((step) => {
+        step.addEventListener('mouseenter', () => {
+          if (!pipelineTrack) {
+            return;
+          }
+
+          const stepId = Number(step.dataset.step);
+          pipelineTrack.classList.add('is-hovering');
+          pipelineSteps.forEach((node) => node.classList.toggle('is-active', node === step));
+
+          pipelineArrows.forEach((arrow) => {
+            const from = Number(arrow.dataset.from);
+            const to = Number(arrow.dataset.to);
+            arrow.classList.toggle('is-linked', from === stepId || to === stepId);
+          });
+        });
+
+        step.addEventListener('mouseleave', clearPipelineFocus);
+      });
+
+      pipelineTrack?.addEventListener('mouseleave', clearPipelineFocus);
+
+      const technicalSlideIds = ['system-overview', 'hardware-layer', 'edge-intelligence', 'cloud-command'];
+      const slider = document.getElementById('techSlider');
+      const sliderDots = Array.from(document.querySelectorAll('.tech-dot'));
+
+      const syncActiveDot = () => {
+        if (!slider) {
+          return;
+        }
+
+        const slideWidth = slider.clientWidth || 1;
+        const activeIndex = Math.max(0, Math.min(technicalSlideIds.length - 1, Math.round(slider.scrollLeft / slideWidth)));
+
+        sliderDots.forEach((dot, index) => {
+          dot.classList.toggle('is-active', index === activeIndex);
+        });
+      };
+
+      if (slider) {
+        technicalSlideIds.forEach((slideId) => {
+          const navLink = document.querySelector(`a[href="#${slideId}"]`);
+          const slide = document.getElementById(slideId);
+
+          if (!navLink || !slide) {
+            return;
+          }
+
+          navLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            slide.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+            window.setTimeout(syncActiveDot, 240);
+          });
+        });
+
+        sliderDots.forEach((dot) => {
+          const targetId = dot.dataset.slideTarget;
+          const targetSlide = targetId ? document.getElementById(targetId) : null;
+
+          if (!targetSlide) {
+            return;
+          }
+
+          dot.addEventListener('click', () => {
+            targetSlide.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+            window.setTimeout(syncActiveDot, 240);
+          });
+        });
+
+        slider.addEventListener('scroll', syncActiveDot, { passive: true });
+        window.addEventListener('resize', syncActiveDot);
+        syncActiveDot();
+      }
+
+      const parallaxNodes = document.querySelectorAll('[data-parallax]');
+
+      const updateParallax = () => {
+        const offset = window.scrollY;
+
+        parallaxNodes.forEach((node) => {
+          const speed = Number(node.getAttribute('data-parallax')) || 0;
+          const translateY = Math.min(42, offset * speed);
+          node.style.transform = `translate3d(0, ${translateY}px, 0)`;
+        });
+      };
+
+      if (parallaxNodes.length > 0) {
+        window.addEventListener('scroll', updateParallax, { passive: true });
+        updateParallax();
+      }
+    </script>
+
+  </body>
+</html>
