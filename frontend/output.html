@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marine Guardian AI - System Output</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: #0a0e17;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #06b6d4;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 6px;
+            color: #10b981;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+        }
+
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-color: #475569;
+        }
+
+        main {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-container {
+            flex: 1;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ef4444; }
+        .terminal-dot.yellow { background: #f59e0b; }
+        .terminal-dot.green { background: #10b981; }
+
+        .terminal-controls {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .control-btn {
+            background: #334155;
+            border: none;
+            color: #94a3b8;
+            padding: 0.4rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #475569;
+            color: #e2e8f0;
+        }
+
+        .control-btn.active {
+            background: #06b6d4;
+            color: #0f172a;
+        }
+
+        .control-btn.export {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #10b981;
+            color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .control-btn.export:hover {
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+            color: #34d399;
+            border-color: #34d399;
+        }
+
+        .control-btn.export::before {
+            content: '⬇ ';
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .output-line {
+            padding: 0.75rem 1rem;
+            background: #1e293b;
+            border-radius: 6px;
+            border-left: 3px solid #475569;
+            animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: opacity 0.5s ease, transform 0.3s ease;
+            opacity: 1;
+            will-change: transform, opacity;
+        }
+
+        /* Slide-in animation */
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* New event glow effect - 3 second highlight */
+        .output-line.new-event {
+            animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), newEventGlow 3s ease-out;
+        }
+
+        @keyframes newEventGlow {
+            0% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.6), inset 0 0 10px rgba(6, 182, 212, 0.1);
+            }
+            30% {
+                box-shadow: 0 0 15px rgba(6, 182, 212, 0.4), inset 0 0 5px rgba(6, 182, 212, 0.05);
+            }
+            100% {
+                box-shadow: none;
+            }
+        }
+
+        /* Older events fade slightly */
+        .output-line.older {
+            opacity: 0.7;
+        }
+
+        .output-line.oldest {
+            opacity: 0.5;
+        }
+
+        /* Hover restores full opacity */
+        .output-line:hover {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        .output-line.ai-prediction {
+            border-left-color: #8b5cf6;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, #1e293b 100%);
+        }
+
+        .output-line.storm-advisory {
+            border-left-color: #f59e0b;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.1) 0%, #1e293b 100%);
+        }
+
+        .output-line.satellite-alert {
+            border-left-color: #06b6d4;
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.1) 0%, #1e293b 100%);
+        }
+
+        .output-line.sos-emergency {
+            border-left-color: #ef4444;
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.15) 0%, #1e293b 100%);
+        }
+
+        .output-line.sos-emergency.new-event {
+            animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), emergencyGlow 3s ease-out;
+        }
+
+        @keyframes emergencyGlow {
+            0% {
+                box-shadow: 0 0 25px rgba(239, 68, 68, 0.7), inset 0 0 15px rgba(239, 68, 68, 0.15);
+            }
+            25% {
+                box-shadow: 0 0 15px rgba(239, 68, 68, 0.5), inset 0 0 8px rgba(239, 68, 68, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(239, 68, 68, 0.6), inset 0 0 10px rgba(239, 68, 68, 0.12);
+            }
+            100% {
+                box-shadow: none;
+            }
+        }
+
+        .output-line.border-warning {
+            border-left-color: #f59e0b;
+        }
+
+        .output-line.border-danger {
+            border-left-color: #ef4444;
+        }
+
+        .output-line.success {
+            border-left-color: #10b981;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, #1e293b 100%);
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .output-timestamp {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .severity-badge {
+            font-size: 0.625rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .severity-badge.info {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .severity-badge.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .severity-badge.critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+            animation: criticalGlow 1.5s infinite;
+        }
+
+        @keyframes criticalGlow {
+            0%, 100% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.7); }
+        }
+
+        .severity-divider {
+            color: #475569;
+            font-weight: 300;
+        }
+
+        .output-type {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .output-type.ai { color: #a78bfa; }
+        .output-type.storm { color: #fbbf24; }
+        .output-type.satellite { color: #22d3ee; }
+        .output-type.sos { color: #f87171; }
+        .output-type.border { color: #fb923c; }
+        .output-type.success { color: #34d399; }
+
+        .output-message {
+            color: #cbd5e1;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            padding-left: 0.5rem;
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            gap: 1rem;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            opacity: 0.5;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 1rem 2rem;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            color: #06b6d4;
+            font-weight: 600;
+        }
+
+        /* Scrollbar styling */
+        .terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-body::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* System Status Panel */
+        .system-status-panel {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-status-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6, #06b6d4);
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: #06b6d4;
+            text-transform: uppercase;
+        }
+
+        .panel-title-icon {
+            font-size: 1.25rem;
+        }
+
+        .panel-live-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: #10b981;
+            padding: 0.25rem 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: livePulse 1.5s infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .status-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-2px);
+            border-color: #475569;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-card.boats::after { background: linear-gradient(90deg, #06b6d4, #0891b2); }
+        .status-card.storms::after { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .status-card.satellites::after { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .status-card.alerts::after { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+        .status-card:hover.boats { border-color: rgba(6, 182, 212, 0.5); box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); }
+        .status-card:hover.storms { border-color: rgba(245, 158, 11, 0.5); box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
+        .status-card:hover.satellites { border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+        .status-card:hover.alerts { border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
+
+        .status-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-card.boats .status-value { color: #06b6d4; }
+        .status-card.storms .status-value { color: #f59e0b; }
+        .status-card.satellites .status-value { color: #8b5cf6; }
+        .status-card.alerts .status-value { color: #ef4444; }
+
+        .status-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Replay Timeline Panel */
+        .timeline-panel {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #8b5cf6);
+            animation: borderGlow 3s linear infinite;
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: #8b5cf6;
+            text-transform: uppercase;
+        }
+
+        .timeline-title-icon {
+            font-size: 1.25rem;
+        }
+
+        .timeline-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            padding: 0.25rem 0.75rem;
+            background: rgba(100, 116, 139, 0.1);
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            border-radius: 20px;
+        }
+
+        .timeline-status.playing {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .timeline-status.paused {
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .timeline-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .playback-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .playback-btn {
+            background: #334155;
+            border: 1px solid #475569;
+            color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .playback-btn:hover {
+            background: #475569;
+            border-color: #64748b;
+        }
+
+        .playback-btn.active {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .playback-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .speed-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .speed-label {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .speed-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 0.35rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .speed-btn:hover {
+            background: #334155;
+            color: #e2e8f0;
+        }
+
+        .speed-btn.active {
+            background: #06b6d4;
+            border-color: #06b6d4;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .timeline-progress {
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar-container {
+            background: #1e293b;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 20px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+
+        .timeline-events {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .timeline-event-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #475569;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .timeline-event-dot.played {
+            background: #8b5cf6;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+        }
+
+        .timeline-event-dot.current {
+            background: #06b6d4;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.7);
+            transform: scale(1.3);
+        }
+
+        .timeline-event-dot:hover {
+            transform: scale(1.2);
+        }
+
+        /* Replayed event highlight */
+        .output-line.replayed {
+            animation: replayHighlight 1s ease-out;
+            border-left-color: #8b5cf6 !important;
+        }
+
+        @keyframes replayHighlight {
+            0% {
+                background: rgba(139, 92, 246, 0.3);
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            }
+            100% {
+                background: inherit;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <span class="logo">🛡️</span>
+            <h1>MARINE GUARDIAN AI - SYSTEM OUTPUT</h1>
+        </div>
+        <div class="header-right">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>MONITORING ACTIVE</span>
+            </div>
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- System Status Panel -->
+        <div class="system-status-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-title-icon">📊</span>
+                    <span>SYSTEM STATUS</span>
+                </div>
+                <div class="panel-live-badge">
+                    <span class="live-dot"></span>
+                    <span>LIVE</span>
+                </div>
+            </div>
+            <div class="status-grid">
+                <div class="status-card boats">
+                    <div class="status-icon">🚤</div>
+                    <div class="status-value" id="status-boats">3</div>
+                    <div class="status-label">Boats Tracked</div>
+                </div>
+                <div class="status-card storms">
+                    <div class="status-icon">⛈️</div>
+                    <div class="status-value" id="status-storms">0</div>
+                    <div class="status-label">Storm Zones Active</div>
+                </div>
+                <div class="status-card satellites">
+                    <div class="status-icon">📡</div>
+                    <div class="status-value" id="status-satellites">6</div>
+                    <div class="status-label">AIS Satellites Active</div>
+                </div>
+                <div class="status-card alerts">
+                    <div class="status-icon">🚨</div>
+                    <div class="status-value" id="status-alerts">0</div>
+                    <div class="status-label">Total Alerts Generated</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <div class="terminal-title">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <span>system_output.log</span>
+                </div>
+                <div class="terminal-controls">
+                    <button class="control-btn active" id="auto-scroll-btn">Auto-Scroll ON</button>
+                    <button class="control-btn" id="clear-btn">Clear Output</button>
+                    <button class="control-btn" id="simulate-btn">Simulate Events</button>
+                    <button class="control-btn export" id="export-btn">Export Logs</button>
+                </div>
+            </div>
+            <div class="terminal-body" id="output-container">
+                <div class="empty-state" id="empty-state">
+                    <span class="empty-state-icon">📡</span>
+                    <span>Waiting for system events...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Replay Timeline Panel -->
+        <div class="timeline-panel">
+            <div class="timeline-header">
+                <div class="timeline-title">
+                    <span class="timeline-title-icon">⏱️</span>
+                    <span>REPLAY TIMELINE</span>
+                </div>
+                <div class="timeline-status" id="timeline-status">
+                    <span id="timeline-status-text">Ready</span>
+                </div>
+            </div>
+            <div class="timeline-controls">
+                <div class="playback-controls">
+                    <button class="playback-btn" id="play-btn">▶ Play</button>
+                    <button class="playback-btn" id="pause-btn" disabled>⏸ Pause</button>
+                    <button class="playback-btn" id="replay-btn">🔄 Replay</button>
+                </div>
+                <div class="speed-controls">
+                    <span class="speed-label">Speed:</span>
+                    <button class="speed-btn active" data-speed="1">1x</button>
+                    <button class="speed-btn" data-speed="2">2x</button>
+                    <button class="speed-btn" data-speed="4">4x</button>
+                </div>
+            </div>
+            <div class="timeline-progress">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-info">
+                    <span id="progress-current">0</span>
+                    <span id="progress-total">/ 0 events</span>
+                </div>
+            </div>
+            <div class="timeline-events" id="timeline-events">
+                <!-- Event dots will be added dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="stats">
+            <div class="stat-item">
+                <span>Total Events:</span>
+                <span class="stat-value" id="total-count">0</span>
+            </div>
+            <div class="stat-item">
+                <span>AI Predictions:</span>
+                <span class="stat-value" id="ai-count">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Storm Advisories:</span>
+                <span class="stat-value" id="storm-count">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Satellite Alerts:</span>
+                <span class="stat-value" id="satellite-count">0</span>
+            </div>
+            <div class="stat-item">
+                <span>SOS Emergencies:</span>
+                <span class="stat-value" id="sos-count">0</span>
+            </div>
+        </div>
+        <span id="current-time"></span>
+    </footer>
+
+    <script>
+        // Configuration
+        const MAX_OUTPUTS = 20;
+        let autoScroll = true;
+        let outputs = [];
+        let timelineHistory = []; // Full history for replay
+        let demoEventCount = 0;
+        let demoInterval = null;
+        let stats = {
+            total: 0,
+            ai: 0,
+            storm: 0,
+            satellite: 0,
+            sos: 0
+        };
+
+        // Replay state
+        let replayState = {
+            isPlaying: false,
+            isPaused: false,
+            currentIndex: 0,
+            speed: 1,
+            interval: null
+        };
+
+        // Vessel IDs
+        const vesselIds = ['TN-FISH-001', 'TN-FISH-002', 'TN-FISH-003'];
+
+        // Get random vessel ID
+        function getRandomVessel() {
+            return vesselIds[Math.floor(Math.random() * vesselIds.length)];
+        }
+
+        // Event types configuration
+        const eventTypes = {
+            'ai-prediction': {
+                icon: '🤖',
+                label: 'AI Prediction',
+                typeClass: 'ai',
+                severity: 'info'
+            },
+            'storm-advisory': {
+                icon: '⛈️',
+                label: 'Storm Advisory',
+                typeClass: 'storm',
+                severity: 'warning'
+            },
+            'satellite-alert': {
+                icon: '📡',
+                label: 'Satellite Signal Alert',
+                typeClass: 'satellite',
+                severity: 'warning'
+            },
+            'sos-emergency': {
+                icon: '🆘',
+                label: 'SOS EMERGENCY',
+                typeClass: 'sos',
+                severity: 'critical'
+            },
+            'border-warning': {
+                icon: '⚠️',
+                label: 'Border Warning',
+                typeClass: 'border',
+                severity: 'warning'
+            },
+            'border-danger': {
+                icon: '🚨',
+                label: 'BORDER DANGER',
+                typeClass: 'sos',
+                severity: 'critical'
+            },
+            'success': {
+                icon: '✅',
+                label: 'Status Update',
+                typeClass: 'success',
+                severity: 'info'
+            }
+        };
+
+        // Sample messages for simulation (use {VESSEL} as placeholder)
+        const sampleMessages = {
+            'ai-prediction': [
+                'Boat {VESSEL} may cross the border in {TIME} minutes.',
+                'Risk assessment: {VESSEL} heading suggests potential border crossing.',
+                'AI analysis complete: Fleet safety score updated to {SCORE}%.',
+                'Predicted collision risk for {VESSEL}: LOW',
+                'Navigation pattern anomaly detected for {VESSEL}.',
+                '{VESSEL} predicted to reach warning zone in {TIME} minutes.'
+            ],
+            'storm-advisory': [
+                'Storm zone detected at coordinates 9.52°N, 79.58°E. Wave height: {WAVE}m',
+                'Weather alert: Wind speed increased to {WIND} knots in sector B3.',
+                'Storm movement predicted: Northwest at 15 km/h.',
+                'Vessel {VESSEL} entering storm proximity zone.',
+                'Weather hazard index elevated to HIGH for Palk Strait region.',
+                '{VESSEL} advised to change course due to storm conditions.'
+            ],
+            'satellite-alert': [
+                'Low satellite signal detected for vessel {VESSEL} - Signal strength: {SIGNAL}%',
+                'Signal restored for vessel {VESSEL} - Signal strength: {SIGNAL}%',
+                'AIS transponder intermittent for {VESSEL}.',
+                'Satellite coverage optimal: 6/6 satellites active.',
+                'Signal degradation detected for {VESSEL} due to atmospheric conditions.'
+            ],
+            'sos-emergency': [
+                'EMERGENCY: Distress signal received from {VESSEL}!',
+                'MAYDAY: Vessel {VESSEL} reporting engine failure.',
+                'SOS ACTIVATED: {VESSEL} at coordinates 9.45°N, 79.55°E - Immediate response required.',
+                'EMERGENCY BEACON: Man overboard alert from {VESSEL}.'
+            ],
+            'border-warning': [
+                'Boat {VESSEL} approaching border ({DIST} km remaining)',
+                'Warning: {VESSEL} trajectory indicates border proximity.',
+                '{VESSEL} detected in warning zone - monitoring closely.'
+            ]
+        };
+
+        // DOM Elements
+        const outputContainer = document.getElementById('output-container');
+        const emptyState = document.getElementById('empty-state');
+        const autoScrollBtn = document.getElementById('auto-scroll-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const simulateBtn = document.getElementById('simulate-btn');
+
+        // Format timestamp
+        function formatTimestamp(date) {
+            return date.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+        }
+
+        // Add output message
+        function addOutput(type, message) {
+            const eventConfig = eventTypes[type];
+            if (!eventConfig) return;
+
+            // Remove empty state if present
+            if (emptyState.parentNode === outputContainer) {
+                emptyState.remove();
+            }
+
+            // Create output element
+            const outputLine = document.createElement('div');
+            outputLine.className = `output-line ${type} new-event`;
+            
+            const timestamp = formatTimestamp(new Date());
+            const severityLabel = eventConfig.severity.toUpperCase();
+            
+            outputLine.innerHTML = `
+                <div class="output-header">
+                    <span class="output-timestamp">[${timestamp}]</span>
+                    <span class="severity-badge ${eventConfig.severity}">${severityLabel}</span>
+                    <span class="severity-divider">|</span>
+                    <span class="output-type ${eventConfig.typeClass}">${eventConfig.icon} ${eventConfig.label}</span>
+                </div>
+                <div class="output-message">${message}</div>
+            `;
+
+            // Add to container
+            outputContainer.appendChild(outputLine);
+
+            // Remove new-event class after 3 seconds (glow duration)
+            setTimeout(() => {
+                outputLine.classList.remove('new-event');
+            }, 3000);
+
+            // Update older events opacity
+            updateEventOpacity();
+
+            // Update outputs array
+            outputs.push({ type, message, timestamp, severity: eventConfig.severity, label: eventConfig.label });
+
+            // Also store in timeline history for replay (keep all events)
+            timelineHistory.push({ type, message, timestamp, severity: eventConfig.severity, label: eventConfig.label });
+            updateTimelineUI();
+
+            // Keep only last MAX_OUTPUTS
+            while (outputContainer.children.length > MAX_OUTPUTS) {
+                outputContainer.removeChild(outputContainer.firstChild);
+                outputs.shift();
+            }
+
+            // Update stats
+            stats.total++;
+            if (type === 'ai-prediction') stats.ai++;
+            else if (type === 'storm-advisory') stats.storm++;
+            else if (type === 'satellite-alert') stats.satellite++;
+            else if (type === 'sos-emergency') stats.sos++;
+
+            updateStats();
+
+            // Auto-scroll to bottom
+            if (autoScroll) {
+                outputContainer.scrollTop = outputContainer.scrollHeight;
+            }
+        }
+
+        // Update opacity of older events for visual hierarchy
+        function updateEventOpacity() {
+            const events = outputContainer.querySelectorAll('.output-line');
+            const totalEvents = events.length;
+            
+            events.forEach((event, index) => {
+                // Remove existing age classes
+                event.classList.remove('older', 'oldest');
+                
+                // Calculate age-based opacity classes
+                const ageFromBottom = totalEvents - 1 - index;
+                
+                if (ageFromBottom > 10) {
+                    event.classList.add('oldest');
+                } else if (ageFromBottom > 5) {
+                    event.classList.add('older');
+                }
+            });
+        }
+
+        // System status tracking
+        let systemStatus = {
+            boats: 3,
+            storms: 0,
+            satellites: 6,
+            alerts: 0
+        };
+
+        // Update statistics display
+        function updateStats() {
+            document.getElementById('total-count').textContent = stats.total;
+            document.getElementById('ai-count').textContent = stats.ai;
+            document.getElementById('storm-count').textContent = stats.storm;
+            document.getElementById('satellite-count').textContent = stats.satellite;
+            document.getElementById('sos-count').textContent = stats.sos;
+            
+            // Update system status panel
+            updateSystemStatus();
+        }
+
+        // Update system status panel values
+        function updateSystemStatus() {
+            // Update total alerts
+            systemStatus.alerts = stats.total;
+            
+            // Randomly fluctuate storm zones (0-2) based on storm events
+            if (stats.storm > 0 && stats.storm % 2 === 0) {
+                systemStatus.storms = Math.min(2, Math.floor(stats.storm / 3) + 1);
+            }
+            
+            // Randomly fluctuate satellites (4-6) based on satellite alerts
+            if (stats.satellite > 0) {
+                const variation = Math.floor(Math.random() * 3);
+                systemStatus.satellites = 6 - variation;
+            }
+            
+            // Update DOM
+            document.getElementById('status-boats').textContent = systemStatus.boats;
+            document.getElementById('status-storms').textContent = systemStatus.storms;
+            document.getElementById('status-satellites').textContent = systemStatus.satellites;
+            document.getElementById('status-alerts').textContent = systemStatus.alerts;
+            
+            // Add visual pulse effect on update
+            const alertCard = document.querySelector('.status-card.alerts .status-value');
+            alertCard.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                alertCard.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // Clear all outputs
+        function clearOutputs() {
+            outputContainer.innerHTML = '';
+            outputContainer.appendChild(emptyState);
+            outputs = [];
+            stats = { total: 0, ai: 0, storm: 0, satellite: 0, sos: 0 };
+            updateStats();
+        }
+
+        // Simulate random event
+        function simulateEvent() {
+            const types = Object.keys(sampleMessages);
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            const messages = sampleMessages[randomType];
+            let randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            
+            // Replace placeholders with random values
+            randomMessage = randomMessage
+                .replace('{VESSEL}', getRandomVessel())
+                .replace('{TIME}', Math.floor(Math.random() * 20 + 5))
+                .replace('{SCORE}', Math.floor(Math.random() * 30 + 65))
+                .replace('{WAVE}', (Math.random() * 3 + 1.5).toFixed(1))
+                .replace('{WIND}', Math.floor(Math.random() * 30 + 35))
+                .replace('{SIGNAL}', Math.floor(Math.random() * 60 + 25))
+                .replace('{DIST}', (Math.random() * 5 + 1.5).toFixed(1));
+            
+            addOutput(randomType, randomMessage);
+        }
+
+        // Generate demo event for auto-demo mode
+        function generateDemoEvent() {
+            if (demoEventCount >= MAX_OUTPUTS) {
+                // Stop demo after 20 messages
+                clearInterval(demoInterval);
+                demoInterval = null;
+                addOutput('success', 'Demo complete: Generated 20 system events.');
+                return;
+            }
+            
+            simulateEvent();
+            demoEventCount++;
+        }
+
+        // Toggle auto-scroll
+        autoScrollBtn.addEventListener('click', () => {
+            autoScroll = !autoScroll;
+            autoScrollBtn.textContent = autoScroll ? 'Auto-Scroll ON' : 'Auto-Scroll OFF';
+            autoScrollBtn.classList.toggle('active', autoScroll);
+        });
+
+        // Clear button
+        clearBtn.addEventListener('click', clearOutputs);
+
+        // Export button
+        const exportBtn = document.getElementById('export-btn');
+        exportBtn.addEventListener('click', exportLogs);
+
+        // Export logs function
+        function exportLogs() {
+            if (outputs.length === 0) {
+                alert('No logs to export.');
+                return;
+            }
+
+            // Build plain text log content
+            let logContent = '='.repeat(60) + '\n';
+            logContent += 'MARINE GUARDIAN AI - SYSTEM LOGS\n';
+            logContent += 'Exported: ' + new Date().toLocaleString() + '\n';
+            logContent += '='.repeat(60) + '\n\n';
+
+            outputs.forEach((log) => {
+                const severity = log.severity ? log.severity.toUpperCase() : 'INFO';
+                const eventLabel = log.label || log.type.replace('-', ' ').toUpperCase();
+                logContent += `${log.timestamp} ${severity} ${eventLabel} ${log.message}\n`;
+            });
+
+            logContent += '\n' + '='.repeat(60) + '\n';
+            logContent += `Total Events: ${outputs.length}\n`;
+            logContent += '='.repeat(60) + '\n';
+
+            // Create and download file
+            const blob = new Blob([logContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'marine_guardian_logs.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Show success feedback
+            addOutput('success', `Exported ${outputs.length} log entries to marine_guardian_logs.txt`);
+        }
+
+        // Simulate button - runs continuous simulation
+        let simulationInterval = null;
+        simulateBtn.addEventListener('click', () => {
+            if (simulationInterval) {
+                clearInterval(simulationInterval);
+                simulationInterval = null;
+                simulateBtn.textContent = 'Simulate Events';
+                simulateBtn.classList.remove('active');
+            } else {
+                simulateEvent(); // Immediate first event
+                simulationInterval = setInterval(simulateEvent, 3000);
+                simulateBtn.textContent = 'Stop Simulation';
+                simulateBtn.classList.add('active');
+            }
+        });
+
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = 
+                now.toLocaleString('en-US', { 
+                    weekday: 'short',
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
+        }
+
+        // Initialize
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Add initial system message and start auto-demo
+        setTimeout(() => {
+            addOutput('success', 'System output monitor initialized. Starting demo...');
+            
+            // Start auto-generating demo events every 5 seconds
+            setTimeout(() => {
+                demoInterval = setInterval(generateDemoEvent, 5000);
+                generateDemoEvent(); // Generate first event immediately
+            }, 1000);
+        }, 500);
+
+        // Listen for messages from main dashboard (if opened in same origin)
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type && event.data.message) {
+                addOutput(event.data.type, event.data.message);
+            }
+        });
+
+        // Check localStorage for shared events (cross-tab communication)
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'marine-guardian-event') {
+                try {
+                    const data = JSON.parse(event.newValue);
+                    if (data && data.type && data.message) {
+                        addOutput(data.type, data.message);
+                    }
+                } catch (e) {
+                    console.error('Error parsing event data:', e);
+                }
+            }
+        });
+
+        // =====================================================
+        // REPLAY TIMELINE FUNCTIONALITY
+        // =====================================================
+
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const replayBtn = document.getElementById('replay-btn');
+        const speedBtns = document.querySelectorAll('.speed-btn');
+        const progressFill = document.getElementById('progress-fill');
+        const progressCurrent = document.getElementById('progress-current');
+        const progressTotal = document.getElementById('progress-total');
+        const timelineEventsContainer = document.getElementById('timeline-events');
+        const timelineStatusEl = document.getElementById('timeline-status');
+        const timelineStatusText = document.getElementById('timeline-status-text');
+
+        // Update timeline UI (event dots and total count)
+        function updateTimelineUI() {
+            progressTotal.textContent = `/ ${timelineHistory.length} events`;
+            
+            // Update event dots
+            timelineEventsContainer.innerHTML = '';
+            timelineHistory.forEach((event, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'timeline-event-dot';
+                dot.title = `${event.timestamp} - ${event.label}`;
+                dot.dataset.index = index;
+                
+                if (index < replayState.currentIndex) {
+                    dot.classList.add('played');
+                }
+                if (index === replayState.currentIndex - 1) {
+                    dot.classList.add('current');
+                }
+                
+                dot.addEventListener('click', () => jumpToEvent(index));
+                timelineEventsContainer.appendChild(dot);
+            });
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = timelineHistory.length > 0 
+                ? (replayState.currentIndex / timelineHistory.length) * 100 
+                : 0;
+            progressFill.style.width = `${progress}%`;
+            progressCurrent.textContent = replayState.currentIndex;
+        }
+
+        // Update timeline status badge
+        function updateTimelineStatus(status) {
+            timelineStatusEl.className = 'timeline-status';
+            if (status === 'playing') {
+                timelineStatusEl.classList.add('playing');
+                timelineStatusText.textContent = 'Playing...';
+            } else if (status === 'paused') {
+                timelineStatusEl.classList.add('paused');
+                timelineStatusText.textContent = 'Paused';
+            } else {
+                timelineStatusText.textContent = 'Ready';
+            }
+        }
+
+        // Add replayed event to console
+        function addReplayedEvent(event) {
+            const eventConfig = eventTypes[event.type];
+            if (!eventConfig) return;
+
+            const outputLine = document.createElement('div');
+            outputLine.className = `output-line ${event.type} replayed`;
+            
+            outputLine.innerHTML = `
+                <div class="output-header">
+                    <span class="output-timestamp">[${event.timestamp}]</span>
+                    <span class="severity-badge ${event.severity}">${event.severity.toUpperCase()}</span>
+                    <span class="severity-divider">|</span>
+                    <span class="output-type ${eventConfig.typeClass}">${eventConfig.icon} ${event.label}</span>
+                    <span style="font-size: 0.65rem; color: #8b5cf6; margin-left: auto;">🔄 REPLAY</span>
+                </div>
+                <div class="output-message">${event.message}</div>
+            `;
+
+            outputContainer.appendChild(outputLine);
+
+            // Keep only last MAX_OUTPUTS
+            while (outputContainer.children.length > MAX_OUTPUTS) {
+                outputContainer.removeChild(outputContainer.firstChild);
+            }
+
+            // Auto-scroll
+            if (autoScroll) {
+                outputContainer.scrollTop = outputContainer.scrollHeight;
+            }
+        }
+
+        // Play next event in replay
+        function playNextEvent() {
+            if (replayState.currentIndex >= timelineHistory.length) {
+                stopReplay();
+                addOutput('success', 'Replay completed.');
+                return;
+            }
+
+            const event = timelineHistory[replayState.currentIndex];
+            addReplayedEvent(event);
+            replayState.currentIndex++;
+            updateProgress();
+            updateTimelineUI();
+        }
+
+        // Start replay
+        function startReplay() {
+            if (timelineHistory.length === 0) {
+                alert('No events to replay.');
+                return;
+            }
+
+            replayState.isPlaying = true;
+            replayState.isPaused = false;
+            
+            playBtn.disabled = true;
+            playBtn.classList.remove('active');
+            pauseBtn.disabled = false;
+            pauseBtn.classList.add('active');
+            
+            updateTimelineStatus('playing');
+
+            // Calculate interval based on speed (base: 1000ms = 1 second)
+            const intervalTime = 1000 / replayState.speed;
+            
+            playNextEvent(); // Play first event immediately
+            replayState.interval = setInterval(playNextEvent, intervalTime);
+        }
+
+        // Pause replay
+        function pauseReplay() {
+            replayState.isPaused = true;
+            replayState.isPlaying = false;
+            
+            if (replayState.interval) {
+                clearInterval(replayState.interval);
+                replayState.interval = null;
+            }
+
+            playBtn.disabled = false;
+            playBtn.classList.add('active');
+            pauseBtn.disabled = true;
+            pauseBtn.classList.remove('active');
+            
+            updateTimelineStatus('paused');
+        }
+
+        // Stop and reset replay
+        function stopReplay() {
+            replayState.isPlaying = false;
+            replayState.isPaused = false;
+            
+            if (replayState.interval) {
+                clearInterval(replayState.interval);
+                replayState.interval = null;
+            }
+
+            playBtn.disabled = false;
+            playBtn.classList.remove('active');
+            pauseBtn.disabled = true;
+            pauseBtn.classList.remove('active');
+            
+            updateTimelineStatus('ready');
+        }
+
+        // Reset replay to beginning
+        function resetReplay() {
+            stopReplay();
+            replayState.currentIndex = 0;
+            updateProgress();
+            updateTimelineUI();
+            
+            // Clear console and show message
+            outputContainer.innerHTML = '';
+            addOutput('success', 'Timeline reset. Ready to replay ' + timelineHistory.length + ' events.');
+        }
+
+        // Jump to specific event
+        function jumpToEvent(index) {
+            if (replayState.isPlaying) {
+                pauseReplay();
+            }
+            
+            replayState.currentIndex = index;
+            updateProgress();
+            updateTimelineUI();
+        }
+
+        // Set replay speed
+        function setSpeed(speed) {
+            replayState.speed = speed;
+            
+            speedBtns.forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.speed) === speed);
+            });
+
+            // If currently playing, restart with new speed
+            if (replayState.isPlaying) {
+                clearInterval(replayState.interval);
+                const intervalTime = 1000 / replayState.speed;
+                replayState.interval = setInterval(playNextEvent, intervalTime);
+            }
+        }
+
+        // Event listeners for replay controls
+        playBtn.addEventListener('click', startReplay);
+        pauseBtn.addEventListener('click', pauseReplay);
+        replayBtn.addEventListener('click', resetReplay);
+
+        speedBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setSpeed(parseInt(btn.dataset.speed));
+            });
+        });
+
+    </script>
+</body>
+</html>

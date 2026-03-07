@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marine Guardian AI - Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <div class="logo">🛡️</div>
+            <h1>MARINE GUARDIAN AI</h1>
+        </div>
+        <div class="header-center">
+            <div class="header-status-group">
+                <span class="status-indicator online"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <div class="header-status-group satellite-status">
+                <span class="satellite-icon">📡</span>
+                <span id="satellite-count">Satellites: 6/6 active</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <span id="current-time"></span>
+            <span class="region-badge">PALK STRAIT REGION</span>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <!-- Left Panel -->
+        <aside class="panel left-panel">
+            <div class="panel-section">
+                <h2>📊 Fleet Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card safe">
+                        <span class="stat-number" id="safe-count">2</span>
+                        <span class="stat-label">SAFE</span>
+                    </div>
+                    <div class="stat-card warning">
+                        <span class="stat-number" id="warning-count">1</span>
+                        <span class="stat-label">WARNING</span>
+                    </div>
+                    <div class="stat-card danger">
+                        <span class="stat-number" id="danger-count">0</span>
+                        <span class="stat-label">DANGER</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h2>🚢 Active Vessels</h2>
+                <ul class="vessel-list" id="vessel-list">
+                    <li class="vessel-item safe">
+                        <span class="vessel-icon">🚤</span>
+                        <div class="vessel-info">
+                            <span class="vessel-name">TN-FISH-001</span>
+                            <span class="vessel-status">Safe Zone</span>
+                        </div>
+                        <span class="vessel-indicator"></span>
+                    </li>
+                    <li class="vessel-item safe">
+                        <span class="vessel-icon">🚤</span>
+                        <div class="vessel-info">
+                            <span class="vessel-name">TN-FISH-002</span>
+                            <span class="vessel-status">Safe Zone</span>
+                        </div>
+                        <span class="vessel-indicator"></span>
+                    </li>
+                    <li class="vessel-item warning">
+                        <span class="vessel-icon">🚤</span>
+                        <div class="vessel-info">
+                            <span class="vessel-name">TN-FISH-003</span>
+                            <span class="vessel-status">Near Border</span>
+                        </div>
+                        <span class="vessel-indicator"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel-section">
+                <h2>🌊 Sea Conditions</h2>
+                <div class="conditions">
+                    <div class="condition-row">
+                        <span>Wind Speed</span>
+                        <span id="wind-speed">12 knots</span>
+                    </div>
+                    <div class="condition-row">
+                        <span>Wave Height</span>
+                        <span id="wave-height">1.2m</span>
+                    </div>
+                    <div class="condition-row">
+                        <span>Visibility</span>
+                        <span id="visibility">Good</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h2>🤖 AI Risk Analysis</h2>
+                <div class="ai-analysis">
+                    <div class="risk-row">
+                        <div class="risk-label">
+                            <span class="risk-icon">⚠️</span>
+                            <span>Border Proximity Risk</span>
+                        </div>
+                        <span id="border-proximity-risk" class="risk-value safe">25%</span>
+                    </div>
+                    <div class="risk-bar">
+                        <div class="risk-bar-fill proximity" style="width: 25%"></div>
+                    </div>
+                    
+                    <div class="risk-row">
+                        <div class="risk-label">
+                            <span class="risk-icon">🛡️</span>
+                            <span>Fleet Safety Score</span>
+                        </div>
+                        <span id="fleet-safety-score" class="risk-value safe">75%</span>
+                    </div>
+                    <div class="risk-bar">
+                        <div class="risk-bar-fill safety" style="width: 75%"></div>
+                    </div>
+                    
+                    <div class="risk-row">
+                        <div class="risk-label">
+                            <span class="risk-icon">🌧️</span>
+                            <span>Weather Hazard Index</span>
+                        </div>
+                        <span id="weather-hazard-index" class="risk-value safe">15%</span>
+                    </div>
+                    <div class="risk-bar">
+                        <div class="risk-bar-fill weather" style="width: 15%"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Panel - Map -->
+        <section class="panel center-panel">
+            <div class="map-header">
+                <h2>🗺️ Live Tracking</h2>
+                <div class="map-controls-top">
+                    <button class="map-btn" id="zoom-in">+</button>
+                    <button class="map-btn" id="zoom-out">−</button>
+                    <button class="map-btn" id="center-map">⌖</button>
+                </div>
+            </div>
+            <div id="map-container"></div>
+            <div class="control-buttons">
+                <button class="control-btn simulation" id="start-simulation">
+                    <span class="btn-icon">▶</span>
+                    Start Simulation
+                </button>
+                <button class="control-btn border" id="show-border">
+                    <span class="btn-icon">⋯</span>
+                    Show Border
+                </button>
+                <button class="control-btn storm" id="storm-alert">
+                    <span class="btn-icon">⛈</span>
+                    Storm Alert
+                </button>
+                <button class="control-btn sos" id="sos-emergency">
+                    <span class="btn-icon">🆘</span>
+                    SOS Emergency
+                </button>
+            </div>
+        </section>
+
+        <!-- Right Panel -->
+        <aside class="panel right-panel">
+            <div class="panel-section">
+                <h2>🔔 Alert Feed</h2>
+                <div class="alert-feed" id="alert-feed">
+                    <div class="alert-item info">
+                        <span class="alert-time">09:45:22</span>
+                        <span class="alert-message">System initialized successfully</span>
+                    </div>
+                    <div class="alert-item info">
+                        <span class="alert-time">09:45:25</span>
+                        <span class="alert-message">Connected to satellite feed</span>
+                    </div>
+                    <div class="alert-item success">
+                        <span class="alert-time">09:46:01</span>
+                        <span class="alert-message">TN-FISH-001 entered safe zone</span>
+                    </div>
+                    <div class="alert-item warning">
+                        <span class="alert-time">09:47:15</span>
+                        <span class="alert-message">TN-FISH-003 approaching border</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h2>📡 Communication</h2>
+                <div class="comm-panel">
+                    <div class="comm-status">
+                        <span class="comm-indicator active"></span>
+                        <span>Radio Channel Active</span>
+                    </div>
+                    <div class="comm-status">
+                        <span class="comm-indicator active"></span>
+                        <span>GPS Signal Strong</span>
+                    </div>
+                    <div class="comm-status">
+                        <span class="comm-indicator active"></span>
+                        <span>Coast Guard Link</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h2>📍 Quick Actions</h2>
+                <div class="quick-actions">
+                    <button class="quick-btn">📋 Generate Report</button>
+                    <button class="quick-btn">📞 Contact Coast Guard</button>
+                    <button class="quick-btn">🔄 Refresh Data</button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <span>Marine Guardian AI v1.0</span>
+        <span>|</span>
+        <span>Palk Strait Monitoring System</span>
+        <span>|</span>
+        <span id="connection-status">● Connected</span>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="map.js"></script>
+</body>
+</html>
