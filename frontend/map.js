@@ -96,15 +96,15 @@ const boats = [
 ];
 
 // International Maritime Border (India – Sri Lanka IMBL in Palk Strait)
-const borderCoordinates = [
-    [9.35, 79.00],
-    [9.20, 79.20],
-    [9.05, 79.40],
-    [8.95, 79.55],
-    [8.85, 79.70],
-    [8.78, 79.85],
-    [8.72, 80.05],
-    [8.70, 80.20]
+const indiaSriLankaBorder = [
+    [9.30, 79.00],
+    [9.15, 79.15],
+    [9.00, 79.35],
+    [8.90, 79.55],
+    [8.82, 79.70],
+    [8.75, 79.90],
+    [8.70, 80.05],
+    [8.65, 80.20]
 ];
 
 // ============================================
@@ -151,9 +151,9 @@ function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
 function calculateDistanceToBorder(boatPosition) {
     let minDistance = Infinity;
     
-    for (let i = 0; i < borderCoordinates.length - 1; i++) {
-        const [lat1, lon1] = borderCoordinates[i];
-        const [lat2, lon2] = borderCoordinates[i + 1];
+    for (let i = 0; i < indiaSriLankaBorder.length - 1; i++) {
+        const [lat1, lon1] = indiaSriLankaBorder[i];
+        const [lat2, lon2] = indiaSriLankaBorder[i + 1];
         const distance = pointToSegmentDistance(
             boatPosition[0], boatPosition[1],
             lat1, lon1, lat2, lon2
@@ -192,9 +192,9 @@ function calculateAngleToBorder(boatPosition) {
     let minDistance = Infinity;
     let nearestPoint = null;
     
-    for (let i = 0; i < borderCoordinates.length - 1; i++) {
-        const [lat1, lon1] = borderCoordinates[i];
-        const [lat2, lon2] = borderCoordinates[i + 1];
+    for (let i = 0; i < indiaSriLankaBorder.length - 1; i++) {
+        const [lat1, lon1] = indiaSriLankaBorder[i];
+        const [lat2, lon2] = indiaSriLankaBorder[i + 1];
         
         // Find closest point on this segment
         const dx = lat2 - lat1;
@@ -838,7 +838,7 @@ function toggleBorder() {
         btn.classList.remove('active');
         addAlert('info', 'Maritime border hidden');
     } else {
-        borderLine = L.polyline(borderCoordinates, {
+        borderLine = L.polyline(indiaSriLankaBorder, {
             color: '#ff3b3b',
             weight: 3,
             dashArray: '12, 10',
@@ -850,9 +850,7 @@ function toggleBorder() {
         
         // Add label to the border line
         borderLine.bindTooltip('India – Sri Lanka International Maritime Boundary', {
-            permanent: false,
-            direction: 'top',
-            className: 'border-tooltip'
+            sticky: true
         });
         
         isBorderVisible = true;
