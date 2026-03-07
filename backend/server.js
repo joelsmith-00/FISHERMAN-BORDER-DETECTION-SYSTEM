@@ -22,6 +22,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 // Import Lambda function
 const processBoatData = require('./lambda/processBoatData');
@@ -38,6 +39,9 @@ app.use(cors());
 
 // Parse JSON request bodies
 app.use(bodyParser.json());
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // =====================================================
 // IN-MEMORY DATA STORES
@@ -208,9 +212,17 @@ app.get('/health', (req, res) => {
 
 /**
  * GET /
- * Root endpoint with API information
+ * Root endpoint - Serve the Marine Guardian Dashboard
  */
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+/**
+ * GET /api
+ * API information endpoint
+ */
+app.get('/api', (req, res) => {
     res.json({
         name: 'Marine Guardian AI - Local API Gateway',
         version: '1.1.0',
@@ -240,14 +252,19 @@ app.listen(PORT, () => {
     console.log('');
     console.log('Architecture: Lambda-style modular backend');
     console.log('');
+    console.log('Dashboard: http://localhost:' + PORT + '/');
+    console.log('');
     console.log('Lambda Functions:');
     console.log('  - processBoatData (./lambda/processBoatData.js)');
     console.log('');
     console.log('Available endpoints:');
+    console.log('  GET  /                   - Marine Guardian Dashboard');
+    console.log('  GET  /output.html        - System Output Console');
     console.log('  POST /updateBoatLocation - Update vessel position');
     console.log('  GET  /vessels            - Get all vessels');
     console.log('  GET  /alerts             - Get alert history');
     console.log('  GET  /health             - Health check');
+    console.log('  GET  /api                - API information');
     console.log('');
     console.log('Server ready to accept connections...');
     console.log('');
