@@ -132,60 +132,73 @@ The system provides **proactive warnings** to prevent border violations before t
 
 ## 🏗️ System Architecture
 
+Marine Guardian AI is designed using an **AWS-style serverless architecture** that enables scalable, cost-effective, and highly available maritime monitoring. The system leverages cloud-native services to process vessel data in real-time and deliver intelligent safety advisories.
+
+### Architecture Diagram
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    MARINE GUARDIAN AI ARCHITECTURE              │
+│              MARINE GUARDIAN AI - AWS ARCHITECTURE              │
 └─────────────────────────────────────────────────────────────────┘
 
-┌─────────────────────┐
-│  Fishing Boat       │
-│  Simulation         │
-│  (GPS/AIS Data)     │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│  API Gateway        │
-│  (Node.js Express)  │
-│  Port: 5000         │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│  Lambda Processor   │
-│  (processBoatData)  │
-│  Risk Analysis      │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│  Local Database     │
-│  (DynamoDB Sim)     │
-│  Vessel & Alerts    │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│  AI Advisory        │
-│  Generator          │
-│  Predictions        │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│  Marine Guardian    │
-│  Dashboard          │
-│  (Frontend UI)      │
-└─────────────────────┘
+┌─────────────────────────────────────────┐
+│     Fishing Boat Simulation             │
+│        (Frontend Dashboard)             │
+│   Generates GPS, Speed, Heading Data    │
+└───────────────────┬─────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────┐
+│         Amazon API Gateway              │
+│   (Receives vessel location updates)    │
+│      REST API: /updateBoatLocation      │
+└───────────────────┬─────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────┐
+│            AWS Lambda                   │
+│   (processBoatData function for         │
+│    risk analysis & border detection)    │
+└───────────────────┬─────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────┐
+│         Amazon DynamoDB                 │
+│  (Store vessel location history,        │
+│   alerts, and tracking data)            │
+└───────────────────┬─────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────┐
+│          Amazon Bedrock                 │
+│  (Generate AI advisory messages         │
+│   for fishermen safety)                 │
+└───────────────────┬─────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────┐
+│      Marine Guardian Dashboard          │
+│  (Display alerts, predictions, and      │
+│   real-time vessel monitoring)          │
+└─────────────────────────────────────────┘
 ```
+
+### AWS Component Descriptions
+
+| AWS Service | Role in System |
+|-------------|----------------|
+| **Amazon API Gateway** | Handles API requests from the frontend simulation. Exposes REST endpoints for vessel location updates, alert retrieval, and health checks. |
+| **AWS Lambda** | Performs serverless processing of vessel data including border proximity calculation, risk prediction, and crossing time estimation. |
+| **Amazon DynamoDB** | Stores vessel tracking data, alerts, and historical movement information. Provides fast, scalable NoSQL storage for real-time operations. |
+| **Amazon Bedrock** | Generates AI-powered safety advisories and natural language recommendations for fishermen based on risk assessments. |
 
 ### Data Flow
 
 1. **Fishing Boat Simulation** → Generates GPS coordinates, speed, and heading
-2. **API Gateway** → Receives vessel data via REST endpoints
-3. **Lambda Processor** → Analyzes risk level, calculates border distance
-4. **Local Database** → Stores vessel positions and alert history
-5. **AI Advisory Generator** → Creates predictions and safety recommendations
+2. **Amazon API Gateway** → Receives vessel data via REST endpoints
+3. **AWS Lambda** → Analyzes risk level, calculates border distance
+4. **Amazon DynamoDB** → Stores vessel positions and alert history
+5. **Amazon Bedrock** → Creates AI predictions and safety recommendations
 6. **Dashboard** → Displays real-time visualization and alerts
 
 ---
