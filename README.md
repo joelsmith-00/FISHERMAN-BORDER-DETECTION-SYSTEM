@@ -13,6 +13,7 @@
 - [Problem Statement](#-problem-statement)
 - [Solution](#-solution)
 - [Key Features](#-key-features)
+- [System Screenshots](#-system-screenshots)
 - [System Architecture](#-system-architecture)
 - [AWS Services (Target Deployment)](#-aws-services-target-deployment)
 - [Project Structure](#-project-structure)
@@ -100,6 +101,32 @@ The system provides **proactive warnings** to prevent border violations before t
 - Terminal-style event viewer
 - Severity-based color coding with glow effects
 - Export logs to text file functionality
+
+---
+
+## 📸 System Screenshots
+
+### Main Dashboard
+
+![Main Dashboard](SCREENSHOT/DASHBOARD.png)
+
+### Map and Full Dashboard View
+
+![Map View](SCREENSHOT/MAP%20AND%20FULL%20DASHBOARD%20VIEW.png)
+
+### Border Detection System
+
+![Border Detection](SCREENSHOT/BORDER%20DETECTION%20SCREENSHOT.png)
+
+### Storm Alert System
+
+![Storm Alert](SCREENSHOT/STROAM%20ALERT%20SYSTEM%20SCREENSHOT.png)
+
+### Boat Monitoring Details
+
+![Boat 1](SCREENSHOT/BOAT%201%20DETAILS.png)
+![Boat 2](SCREENSHOT/BOAT%202%20DETAILS.png)
+![Boat 3](SCREENSHOT/BOAT%203%20DETAILS.png)
 
 ---
 
