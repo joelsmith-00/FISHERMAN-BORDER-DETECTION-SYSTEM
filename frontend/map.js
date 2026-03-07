@@ -97,15 +97,21 @@ const boats = [
 
 // International Maritime Border (India – Sri Lanka IMBL in Palk Strait)
 const indiaSriLankaBorder = [
-    [9.35, 78.95],
-    [9.25, 79.05],
-    [9.10, 79.20],
-    [8.95, 79.40],
-    [8.85, 79.60],
-    [8.75, 79.80],
-    [8.70, 80.00],
-    [8.65, 80.20]
+    [9.20, 78.95],
+    [9.10, 79.10],
+    [9.00, 79.30],
+    [8.90, 79.50],
+    [8.80, 79.70],
+    [8.72, 79.90],
+    [8.68, 80.10]
 ];
+
+// Unique colors for each boat
+const boatColors = {
+    'TN-FISH-001': '#00ff9d',  // Green
+    'TN-FISH-002': '#ffb020',  // Orange
+    'TN-FISH-003': '#00e1ff'   // Cyan
+};
 
 // ============================================
 // Distance Calculation Functions
@@ -514,7 +520,12 @@ function addBoatMarker(boat) {
 }
 
 function createBoatIcon(boat) {
-    const color = getMarkerColor(boat.status);
+    // Use unique boat color, fallback to status-based color
+    const uniqueColor = boatColors[boat.id];
+    const statusColor = getMarkerColor(boat.status);
+    const color = uniqueColor || statusColor;
+    
+    // Glow based on risk status
     const glowColor = boat.status === 'danger' ? 'rgba(255, 59, 59, 0.6)' :
                       boat.status === 'warning' ? 'rgba(255, 176, 32, 0.6)' :
                       'rgba(0, 255, 157, 0.4)';
@@ -841,20 +852,21 @@ function toggleBorder() {
         borderLine = L.polyline(indiaSriLankaBorder, {
             color: '#ff3b3b',
             weight: 4,
-            opacity: 0.95
+            dashArray: '10, 12',
+            opacity: 0.9
         }).addTo(map);
         
         // Ensure border is below boat markers
         borderLine.bringToBack();
         
         // Add label to the border line
-        borderLine.bindTooltip('India – Sri Lanka International Maritime Boundary', {
+        borderLine.bindTooltip('India Maritime Boundary', {
             sticky: true
         });
         
         isBorderVisible = true;
         btn.classList.add('active');
-        addAlert('warning', 'Maritime border displayed - Red boundary line');
+        addAlert('warning', 'Maritime border displayed - Red dashed line');
     }
 }
 
