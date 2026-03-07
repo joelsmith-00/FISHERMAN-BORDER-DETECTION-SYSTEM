@@ -97,13 +97,13 @@ const boats = [
 
 // International Maritime Border (India – Sri Lanka IMBL in Palk Strait)
 const indiaSriLankaBorder = [
-    [9.30, 79.00],
-    [9.15, 79.15],
-    [9.00, 79.35],
-    [8.90, 79.55],
-    [8.82, 79.70],
-    [8.75, 79.90],
-    [8.70, 80.05],
+    [9.35, 78.95],
+    [9.25, 79.05],
+    [9.10, 79.20],
+    [8.95, 79.40],
+    [8.85, 79.60],
+    [8.75, 79.80],
+    [8.70, 80.00],
     [8.65, 80.20]
 ];
 
@@ -177,9 +177,9 @@ function getRiskStatus(distanceKm) {
 // Get marker color based on status
 function getMarkerColor(status) {
     switch (status) {
-        case 'danger': return '#ef4444';  // Red
-        case 'warning': return '#f59e0b'; // Yellow/Orange
-        default: return '#10b981';        // Green
+        case 'danger': return '#ff3b3b';  // Red
+        case 'warning': return '#ffb020'; // Orange
+        default: return '#00ff9d';        // Green
     }
 }
 
@@ -503,8 +503,8 @@ function addBoatMarker(boat) {
     // Add safe zone circle for designated boat
     if (boat.hasSafeZone) {
         safeZoneCircle = L.circle(boat.position, {
-            color: '#10b981',
-            fillColor: '#10b981',
+            color: '#00ff9d',
+            fillColor: '#00ff9d',
             fillOpacity: 0.15,
             radius: 8000,
             dashArray: '10, 5',
@@ -515,9 +515,9 @@ function addBoatMarker(boat) {
 
 function createBoatIcon(boat) {
     const color = getMarkerColor(boat.status);
-    const glowColor = boat.status === 'danger' ? 'rgba(239, 68, 68, 0.6)' :
-                      boat.status === 'warning' ? 'rgba(245, 158, 11, 0.6)' :
-                      'rgba(16, 185, 129, 0.4)';
+    const glowColor = boat.status === 'danger' ? 'rgba(255, 59, 59, 0.6)' :
+                      boat.status === 'warning' ? 'rgba(255, 176, 32, 0.6)' :
+                      'rgba(0, 255, 157, 0.4)';
     
     return L.divIcon({
         className: 'boat-marker',
@@ -535,8 +535,8 @@ function createBoatIcon(boat) {
 }
 
 function createBoatPopup(boat) {
-    const statusColor = boat.status === 'safe' ? '#10b981' : 
-                       boat.status === 'warning' ? '#f59e0b' : '#ef4444';
+    const statusColor = boat.status === 'safe' ? '#00ff9d' : 
+                       boat.status === 'warning' ? '#ffb020' : '#ff3b3b';
     const statusLabel = boat.status === 'safe' ? 'SAFE' : 
                        boat.status === 'warning' ? 'WARNING' : 'DANGER';
     const distanceText = boat.distanceToBorder !== null ? 
@@ -547,15 +547,15 @@ function createBoatPopup(boat) {
                             `${boat.predictedCrossingTime} min` : 'N/A';
     const riskLevelText = boat.riskScore >= 60 ? 'HIGH' : 
                          boat.riskScore >= 30 ? 'MEDIUM' : 'LOW';
-    const riskColor = boat.riskScore >= 60 ? '#ef4444' : 
-                     boat.riskScore >= 30 ? '#f59e0b' : '#10b981';
+    const riskColor = boat.riskScore >= 60 ? '#ff3b3b' : 
+                     boat.riskScore >= 30 ? '#ffb020' : '#00ff9d';
     
     // Signal strength info
     const signalStrength = boat.signalStrength || 0;
     const signalLabel = signalStrength >= 70 ? 'Strong' : 
                        signalStrength >= 40 ? 'Moderate' : 'Weak';
-    const signalColor = signalStrength >= 70 ? '#10b981' : 
-                       signalStrength >= 40 ? '#f59e0b' : '#ef4444';
+    const signalColor = signalStrength >= 70 ? '#00ff9d' : 
+                       signalStrength >= 40 ? '#ffb020' : '#ff3b3b';
     
     let suggestionHTML = '';
     if (boat.suggestedHeading && boat.status !== 'safe') {
@@ -571,7 +571,7 @@ function createBoatPopup(boat) {
     let stormWarningHTML = '';
     if (boat.inStormZone) {
         stormWarningHTML = `
-            <div style="margin-top: 8px; padding: 6px; background: #fef3c7; border-radius: 4px; border-left: 3px solid #f59e0b;">
+            <div style="margin-top: 8px; padding: 6px; background: #fef3c7; border-radius: 4px; border-left: 3px solid #ffb020;">
                 <div style="font-size: 11px; color: #92400e; font-weight: 600;">⛈️ STORM WARNING</div>
                 <div style="font-size: 11px; color: #78350f;">Wave Height: ${stormData.waveHeight}m | Wind: ${stormData.windSpeed} knots</div>
             </div>
@@ -604,7 +604,7 @@ function createBoatPopup(boat) {
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <span><strong>Predicted Crossing:</strong></span>
-                    <span style="color: ${boat.predictedCrossingTime ? '#ef4444' : '#666'};">${crossingTimeText}</span>
+                    <span style="color: ${boat.predictedCrossingTime ? '#ff3b3b' : '#666'};">${crossingTimeText}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <span><strong>Risk Level:</strong></span>
@@ -787,11 +787,11 @@ function updateSatelliteStatus() {
         const satIcon = document.querySelector('.satellite-icon');
         if (satIcon) {
             if (avgCoverage >= 90) {
-                satIcon.style.color = '#10b981';
+                satIcon.style.color = '#00ff9d';
             } else if (avgCoverage >= 80) {
-                satIcon.style.color = '#f59e0b';
+                satIcon.style.color = '#ffb020';
             } else {
-                satIcon.style.color = '#ef4444';
+                satIcon.style.color = '#ff3b3b';
             }
         }
     }
@@ -840,9 +840,8 @@ function toggleBorder() {
     } else {
         borderLine = L.polyline(indiaSriLankaBorder, {
             color: '#ff3b3b',
-            weight: 3,
-            dashArray: '12, 10',
-            opacity: 0.9
+            weight: 4,
+            opacity: 0.95
         }).addTo(map);
         
         // Ensure border is below boat markers
@@ -855,7 +854,7 @@ function toggleBorder() {
         
         isBorderVisible = true;
         btn.classList.add('active');
-        addAlert('warning', 'Maritime border displayed - Red dashed line');
+        addAlert('warning', 'Maritime border displayed - Red boundary line');
     }
 }
 
