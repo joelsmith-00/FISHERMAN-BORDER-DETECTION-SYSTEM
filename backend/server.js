@@ -27,7 +27,7 @@ const bodyParser = require('body-parser');
 const processBoatData = require('./lambda/processBoatData');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // =====================================================
 // MIDDLEWARE
