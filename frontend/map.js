@@ -95,14 +95,15 @@ const boats = [
     }
 ];
 
-// International Maritime Border (approximate line between India and Sri Lanka)
+// International Maritime Border (approximate line between India and Sri Lanka in Palk Strait)
 const borderCoordinates = [
-    [10.0, 79.0],
-    [9.8, 79.3],
-    [9.6, 79.5],
-    [9.4, 79.7],
-    [9.2, 79.9],
-    [9.0, 80.1]
+    [9.3000, 79.0000],
+    [9.2000, 79.2000],
+    [9.1000, 79.4000],
+    [9.0000, 79.6000],
+    [8.9000, 79.8000],
+    [8.8000, 80.0000],
+    [8.7000, 80.2000]
 ];
 
 // ============================================
@@ -837,11 +838,18 @@ function toggleBorder() {
         addAlert('info', 'Maritime border hidden');
     } else {
         borderLine = L.polyline(borderCoordinates, {
-            color: '#ef4444',
+            color: '#ff3b3b',
             weight: 3,
-            dashArray: '15, 10',
-            opacity: 0.8
+            dashArray: '10, 10',
+            opacity: 0.9
         }).addTo(map);
+        
+        // Add label to the border line
+        borderLine.bindTooltip('International Maritime Boundary', {
+            permanent: false,
+            direction: 'center',
+            className: 'border-tooltip'
+        });
         
         isBorderVisible = true;
         btn.classList.add('active');

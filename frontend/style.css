@@ -840,3 +840,19 @@ footer {
         border-right: 1px solid var(--border-color);
     }
 }
+
+/* Border Tooltip Styling */
+.border-tooltip {
+    background-color: rgba(255, 59, 59, 0.9);
+    border: 2px solid #ff3b3b;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(255, 59, 59, 0.5);
+}
+
+.border-tooltip::before {
+    border-top-color: #ff3b3b;
+}
